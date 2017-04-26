@@ -1,6 +1,5 @@
 ---
 ldap_tls_cacertdir: /etc/pki/tls/certs
-ldap_gid_users: 100
 ldap_uid_min: 1000
 ldap_client_files:
   sudo-ldap.conf:

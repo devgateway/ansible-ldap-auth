@@ -3,18 +3,18 @@ gid ldap
 
 uri ldaps://{{ ldap_host }}
 
-base passwd {{ ldap_base_passwd }}
-scope passwd one
-filter passwd (&(objectClass=posixAccount)(gidNumber={{ ldap_gid_users }}))
+base passwd {{ ldap_passwd_base }}
+scope passwd {{ ldap_passwd_scope | default('sub') }}
+filter passwd {{ ldap_passwd_filter }}
 
-base shadow {{ ldap_base_shadow }}
-scope shadow one
-filter shadow (&(objectClass=posixAccount)(gidNumber={{ ldap_gid_users }}))
+base shadow {{ ldap_shadow_base }}
+scope shadow {{ ldap_shadow_scope | default('sub') }}
+filter shadow {{ ldap_shadow_filter }}
 
-base netgroup {{ ldap_base_netgroup }}
-scope netgroup sub
+base netgroup {{ ldap_netgroup_base }}
+scope netgroup {{ ldap_netgroup_scope | default('sub') }}
 
-{% if ansible_distribution_major_version == 7 %}
+{% if ansible_distribution_major_version >= 7 %}
 nss_min_uid {{ ldap_uid_min }}
 {% endif %}
 tls_cacertdir {{ ldap_tls_cacertdir }}
