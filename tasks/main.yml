@@ -10,7 +10,7 @@
   service: name=nslcd enabled=yes
 
 - name: Install LDAP server TLS certificate
-  copy: src=pinned.crt dest={{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }} mode=644
+  copy: src=certs/{{ ldap_tls_cert }} dest={{ ldap_tls_cacertdir }}/ mode=644
 
 - name: Install LDAP client config files
   template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
