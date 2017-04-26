@@ -1,0 +1,40 @@
+---
+- name: Install LDAP client packages
+  yum: name={{ item }} state=latest
+  with_items: 
+    - nss-pam-ldapd
+    - openldap
+    - openldap-clients
+
+- name: Enable NSLCD service
+  service: name=nslcd enabled=yes
+
+- name: Install LDAP server TLS certificate
+  copy: src=pinned.crt dest={{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }} mode=644
+
+- name: Install LDAP client config files
+  template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
+  with_dict: "{{ ldap_client_files }}"
+  notify: Restart nslcd
+
+- name: Install LDAP auth and secure TTY PAM stacks
+  copy: src=pam.d/{{ item }} dest=/etc/pam.d/{{ item }} mode=644
+  with_items:
+    - login
+    - ldap-auth
+
+- name: Configure NSS to use LDAP services
+  copy: src=nsswitch.conf dest=/etc/nsswitch.conf mode=644
+
+- name: Configure PAM system and password auth to use LDAP
+  file: src=ldap-auth dest=/etc/pam.d/{{ item }} state=link force=yes
+  with_items:
+    - system-auth
+    - password-auth
+
+- name: Install getauthorizedkey helper script
+  copy: src=getauthorizedkey dest=/usr/libexec/getauthorizedkey mode=755
+
+- name: Install SSH config to use LDAP public keys
+  copy: src=sshd_config dest=/etc/ssh/sshd_config mode=600
+  notify: Reload sshd

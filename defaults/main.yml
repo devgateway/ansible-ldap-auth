@@ -1,0 +1,15 @@
+---
+ldap_tls_cacertdir: /etc/pki/tls/certs
+ldap_gid_users: 100
+ldap_uid_min: 1000
+ldap_client_files:
+  sudo-ldap.conf:
+    dest: /etc/sudo-ldap.conf
+    mode: 640
+  ldap.conf:
+    dest: /etc/openldap/ldap.conf
+    mode: 644
+  nslcd.conf:
+    dest: /etc/nslcd.conf
+    mode: 600
+

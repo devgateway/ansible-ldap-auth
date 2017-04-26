@@ -1,0 +1,4 @@
+ssl on
+tls_cacertfile {{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }}
+uri ldaps://{{ ldap_host }}
+sudoers_base {{ ldap_base_sudoers }}

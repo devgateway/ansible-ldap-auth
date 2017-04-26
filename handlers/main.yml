@@ -1,0 +1,6 @@
+---
+- name: Restart nslcd
+  service: name=nslcd state=restarted
+
+- name: Reload sshd
+  service: name=sshd state=reloaded
