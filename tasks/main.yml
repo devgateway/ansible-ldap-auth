@@ -54,8 +54,14 @@
   tags:
     - config
 
-- name: Install SSH config to use LDAP public keys
-  copy: src=sshd_config dest=/etc/ssh/sshd_config mode=600
-  notify: Reload sshd
+- name: Configure SSH with LDAP public keys support
+  lineinfile: >
+    dest=/etc/ssh/sshd_config
+    regexp="(?i)^\\s*{{ item.directive }}\\b"
+    insertafter="(?i)^#\\s*{{ item.directive }}\\b"
+    line="{{ item.directive }} {{ item.value }}"
+  with_items: "{{ ldap_sshd_config }}"
+  notify: Validate SSH config
   tags:
     - config
+    - debug

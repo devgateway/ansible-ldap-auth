@@ -2,5 +2,9 @@
 - name: Restart nslcd
   service: name=nslcd state=restarted
 
-- name: Reload sshd
+- name: Validate SSH config
+  command: sshd -t
+  notify: Reload SSH daemon
+
+- name: Reload SSH daemon
   service: name=sshd state=reloaded
