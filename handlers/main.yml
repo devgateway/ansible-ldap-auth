@@ -1,5 +1,5 @@
 ---
-- name: Restart nslcd
+- name: Restart NSLCD
   service: name=nslcd state=restarted
 
 - name: Validate SSH config

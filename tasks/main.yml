@@ -29,7 +29,7 @@
 - name: Install LDAP client config files
   template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
   with_dict: "{{ ldap_client_files }}"
-  notify: Restart nslcd
+  notify: Restart NSLCD
   tags:
     - config
 
