@@ -11,4 +11,5 @@ ldap_client_files:
   nslcd.conf:
     dest: /etc/nslcd.conf
     mode: 600
-
+ldap_pubkey_filter: (&(objectClass=ldapPublicKey)(uid=%s))
+ldap_pubkey_attr: sshPublicKey

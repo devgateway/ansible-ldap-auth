@@ -1,4 +1,4 @@
 BASE {{ ldap_base }}
 SASL_NOCANON on
 TLS_CACERT {{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }}
-URI ldaps://{{ ldap_host }}
+URI {{ ldap_uri }}
