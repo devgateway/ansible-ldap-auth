@@ -47,6 +47,39 @@
   tags:
     - config
 
+- name: Configure pam-param LDAP connection
+  ini_file: >
+    dest={{ ldap_pam_param_config_file }}
+    section=ldap
+    option="{{ item.0 }}"
+    value="{{ item.1 }}"
+  with_together:
+    - ['uri', 'binddn', 'bindpw']
+    - ["{{ ldap_uri }}", "{{ ldap_dn }}", "{{ ldap_pw }}"]
+  tags:
+    - config
+
+- name: Configure pam-param lookups
+  ini_file: >
+    dest={{ ldap_pam_param_config_file }}
+    section="{{ item[0] }}"
+    option="{{ item[1] }}"
+    value="{{ ldap_pam_param_config[item[0]][item[1]] }}"
+  with_nested:
+    - ['admin', 'user', 'host', 'membership']
+    - ['base', 'scope', 'filter']
+  tags:
+    - config
+
+- name: Configure pam-param host name shortening
+  ini_file: >
+    dest={{ ldap_pam_param_config_file }}
+    section=""
+    option=short_name
+    value={{ 1 if ldap_pam_param_short_name else 0 }}
+  tags:
+    - config
+
 - name: Configure PAM system and password auth to use LDAP
   file: src=ldap-auth dest=/etc/pam.d/{{ item }} state=link force=yes
   with_items:

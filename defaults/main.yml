@@ -21,3 +21,5 @@ ldap_sshd_config:
     value: "{{ ldap_authorized_keys_command_user }}"
   - directive: UsePAM
     value: "yes"
+ldap_pam_param_short_name: true
+ldap_pam_param_config_file: /etc/security/pam_param.ini
