@@ -64,4 +64,3 @@
   notify: Validate SSH config
   tags:
     - config
-    - debug
