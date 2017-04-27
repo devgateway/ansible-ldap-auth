@@ -7,6 +7,8 @@
     - openldap-clients
     - pam-param
     - getauthorizedkeys
+  tags:
+    - package
 
 - name: Configure getauthorizedkeys
   template: >
@@ -21,6 +23,8 @@
 
 - name: Install LDAP server TLS certificate
   copy: src=certs/{{ ldap_tls_cert }} dest={{ ldap_tls_cacertdir }}/ mode=644
+  tags:
+    - config
 
 - name: Install LDAP client config files
   template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
@@ -53,3 +57,5 @@
 - name: Install SSH config to use LDAP public keys
   copy: src=sshd_config dest=/etc/ssh/sshd_config mode=600
   notify: Reload sshd
+  tags:
+    - config
