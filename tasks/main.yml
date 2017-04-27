@@ -5,6 +5,14 @@
     - nss-pam-ldapd
     - openldap
     - openldap-clients
+    - pam-param
+    - getauthorizedkeys
+
+- name: Configure getauthorizedkeys
+  template: >
+    src=getauthorizedkeys.ini.j2
+    dest=/etc/getauthorizedkeys.ini
+    mode=0600
 
 - name: Enable NSLCD service
   service: name=nslcd enabled=yes
@@ -31,9 +39,6 @@
   with_items:
     - system-auth
     - password-auth
-
-- name: Install getauthorizedkey helper script
-  copy: src=getauthorizedkey dest=/usr/libexec/getauthorizedkey mode=755
 
 - name: Install SSH config to use LDAP public keys
   copy: src=sshd_config dest=/etc/ssh/sshd_config mode=600

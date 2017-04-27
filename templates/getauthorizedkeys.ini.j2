@@ -1,0 +1,10 @@
+[ldap]
+uri = {{ ldap_uri }}
+binddn = {{ ldap_dn }}
+bindpw = {{ ldap_pw }}
+
+[user]
+base = {{ ldap_passwd_base }}
+scope = {{ ldap_passwd_scope | default('sub') }}
+filter = {{ ldap_pubkey_filter }}
+attr = {{ ldap_pubkey_attr }}
