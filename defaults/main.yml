@@ -13,10 +13,11 @@ ldap_client_files:
     mode: 600
 ldap_pubkey_filter: (&(objectClass=ldapPublicKey)(uid=%s))
 ldap_pubkey_attr: sshPublicKey
+ldap_authorized_keys_command_user: nobody
 ldap_sshd_config:
   - directive: AuthorizedKeysCommand
     value: /usr/libexec/getauthorizedkeys
   - directive: AuthorizedKeysCommandUser
-    value: "{{ ldap_authorized_keys_command_user | default('root') }}"
+    value: "{{ ldap_authorized_keys_command_user }}"
   - directive: UsePAM
     value: "yes"

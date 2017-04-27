@@ -15,6 +15,7 @@
     src=getauthorizedkeys.ini.j2
     dest=/etc/getauthorizedkeys.ini
     mode=0600
+    owner={{ ldap_authorized_keys_command_user }}
   tags:
     - config
 
