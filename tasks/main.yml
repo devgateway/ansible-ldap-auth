@@ -10,40 +10,8 @@
   tags:
     - package
 
-- name: Configure getauthorizedkeys
-  template: >
-    src=getauthorizedkeys.ini.j2
-    dest=/etc/getauthorizedkeys.ini
-    mode=0600
-    owner={{ ldap_authorized_keys_command_user }}
-  tags:
-    - config
-
-- name: Enable NSLCD service
-  service: name=nslcd enabled=yes
-
 - name: Install LDAP server TLS certificate
   copy: src=certs/{{ ldap_tls_cert }} dest={{ ldap_tls_cacertdir }}/ mode=644
-  tags:
-    - config
-
-- name: Install LDAP client config files
-  template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
-  with_dict: "{{ ldap_client_files }}"
-  notify: Restart NSLCD
-  tags:
-    - config
-
-- name: Install LDAP auth and secure TTY PAM stacks
-  copy: src=pam.d/{{ item }} dest=/etc/pam.d/{{ item }} mode=644
-  with_items:
-    - login
-    - ldap-auth
-  tags:
-    - config
-
-- name: Configure NSS to use LDAP services
-  template: src=nsswitch.conf.j2 dest=/etc/nsswitch.conf mode=644
   tags:
     - config
 
@@ -80,11 +48,12 @@
   tags:
     - config
 
-- name: Configure PAM system and password auth to use LDAP
-  file: src=ldap-auth dest=/etc/pam.d/{{ item }} state=link force=yes
-  with_items:
-    - system-auth
-    - password-auth
+- name: Configure getauthorizedkeys
+  template: >
+    src=getauthorizedkeys.ini.j2
+    dest=/etc/getauthorizedkeys.ini
+    mode=0600
+    owner={{ ldap_authorized_keys_command_user }}
   tags:
     - config
 
@@ -98,3 +67,35 @@
   notify: Validate SSH config
   tags:
     - config
+
+- name: Install LDAP client config files
+  template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
+  with_dict: "{{ ldap_client_files }}"
+  notify: Restart NSLCD
+  tags:
+    - config
+
+- name: Configure NSS to use LDAP services
+  template: src=nsswitch.conf.j2 dest=/etc/nsswitch.conf mode=644
+  tags:
+    - config
+
+- name: Enable NSLCD service
+  service: name=nslcd enabled=yes
+
+- name: Install LDAP auth and secure TTY PAM stacks
+  copy: src=pam.d/{{ item }} dest=/etc/pam.d/{{ item }} mode=644
+  with_items:
+    - login
+    - ldap-auth
+  tags:
+    - config
+
+- name: Configure PAM system and password auth to use LDAP
+  file: src=ldap-auth dest=/etc/pam.d/{{ item }} state=link force=yes
+  with_items:
+    - system-auth
+    - password-auth
+  tags:
+    - config
+
