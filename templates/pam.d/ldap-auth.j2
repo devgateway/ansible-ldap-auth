@@ -1,12 +1,12 @@
 #%PAM-1.0
 auth        required      pam_env.so
-auth        sufficient    pam_ldap.so minimum_uid=1000 ignore_authinfo_unavail
+auth        sufficient    pam_ldap.so minimum_uid={{ ldap_uid_min }} ignore_authinfo_unavail
 auth        sufficient    pam_unix.so nullok try_first_pass
-auth        requisite     pam_succeed_if.so uid >= 1000 quiet_success
+auth        requisite     pam_succeed_if.so uid >= {{ ldap_uid_min }} quiet_success
 auth        required      pam_deny.so
 
 account     [success=ok default=ignore] pam_localuser.so
-account     sufficient    pam_succeed_if.so uid < 1000 quiet
+account     sufficient    pam_succeed_if.so uid < {{ ldap_uid_min }} quiet
 account     [success=ok service_err=ignore default=bad] pam_param.so
 
 password    requisite     pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=

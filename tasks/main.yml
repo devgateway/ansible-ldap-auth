@@ -84,7 +84,7 @@
   service: name=nslcd enabled=yes
 
 - name: Install LDAP auth and secure TTY PAM stacks
-  copy: src=pam.d/{{ item }} dest=/etc/pam.d/{{ item }} mode=644
+  template: src=pam.d/{{ item }}.j2 dest=/etc/pam.d/{{ item }} mode=644
   with_items:
     - login
     - ldap-auth

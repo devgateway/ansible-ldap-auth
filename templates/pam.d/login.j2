@@ -3,7 +3,7 @@ auth        [user_unknown=ignore success=done ignore=ignore default=bad] pam_sec
 
 account     required    pam_nologin.so
 account     sufficient  pam_localuser.so
-account     sufficient  pam_succeed_if.so uid < 1000 quiet
+account     sufficient  pam_succeed_if.so uid < {{ ldap_uid_min }} quiet
 account     required    pam_permit.so
 
 password    sufficient  pam_unix.so sha512 shadow nullok try_first_pass use_authtok
