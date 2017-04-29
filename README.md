@@ -1,38 +1,68 @@
-Role Name
+ldap-auth
 =========
 
-A brief description of the role goes here.
+Configure LDAP authentication & authorization with parametrized user/host/project lookups.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+You must place your LDAP server certificate in `files/certs/*.crt`.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+### Required variables
+
+* `ldap_tls_cert` - 
+
+* `ldap_uri` - 
+
+
+### Optional variables
+
+* `ldap_authorized_keys_command_user` - 
+
+* `ldap_client_files` - 
+
+* `ldap_pam_param_config_file` - 
+
+* `ldap_pam_param_short_name` - 
+
+* `ldap_pubkey_attr` - 
+
+* `ldap_pubkey_filter` - 
+
+* `ldap_sshd_config` - 
+
+* `ldap_sudoers` - 
+
+* `ldap_tls_cacertdir` - 
+
+* `ldap_uid_min` - 
+
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* `local-repo` - the role adding a local repository with pam-param and getauthorizedkeys RPMs.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
+    - hosts: ldap-auth
       roles:
-         - { role: username.rolename, x: 42 }
+        - ldap-auth
+      vars:
+        ldap_tls_cert: production.crt
+        ldap_uri: ldaps://ldap.example.org
+        ldap_sudoers: false
 
 License
 -------
 
-BSD
+GPLv3+
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Development Gateway
