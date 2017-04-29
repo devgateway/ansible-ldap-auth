@@ -2,7 +2,7 @@ passwd:     ldap files
 shadow:     ldap files
 group:      files
 hosts:      files dns
-sudoers:    ldap files
+sudoers:    {%if ldap_sudoers %}ldap {% endif %}files
 netgroup:   ldap
 bootparams: nisplus [NOTFOUND=return] files
 ethers:     files

@@ -43,7 +43,7 @@
     - config
 
 - name: Configure NSS to use LDAP services
-  copy: src=nsswitch.conf dest=/etc/nsswitch.conf mode=644
+  template: src=nsswitch.conf.j2 dest=/etc/nsswitch.conf mode=644
   tags:
     - config
 
