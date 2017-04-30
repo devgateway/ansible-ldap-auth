@@ -1,7 +1,7 @@
 [ldap]
 uri = {{ ldap_uri }}
-binddn = {{ ldap_dn }}
-bindpw = {{ ldap_pw }}
+binddn = {{ ldap_dn | default('') }}
+bindpw = {{ ldap_pw | default('') }}
 
 [user]
 base = {{ ldap_passwd_base }}

@@ -23,7 +23,7 @@
     value="{{ item.1 }}"
   with_together:
     - ['uri', 'binddn', 'bindpw']
-    - ["{{ ldap_uri }}", "{{ ldap_dn }}", "{{ ldap_pw }}"]
+    - ["{{ ldap_uri }}", "{{ ldap_dn | default('') }}", "{{ ldap_pw | default('') }}"]
   tags:
     - config
 
