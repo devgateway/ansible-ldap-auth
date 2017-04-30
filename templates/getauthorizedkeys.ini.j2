@@ -4,7 +4,7 @@ binddn = {{ ldap_dn | default('') }}
 bindpw = {{ ldap_pw | default('') }}
 
 [user]
-base = {{ ldap_passwd_base }}
-scope = {{ ldap_passwd_scope | default('sub') }}
-filter = {{ ldap_pubkey_filter }}
+base = {{ ldap_lookups.user.base }}
+scope = {{ ldap_lookups.user.scope | default('sub') }}
+filter = {{ ldap_lookups.user.filter }}
 attr = {{ ldap_pubkey_attr }}

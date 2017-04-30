@@ -32,7 +32,7 @@
     dest={{ ldap_pam_param_config_file }}
     section="{{ item[0] }}"
     option="{{ item[1] }}"
-    value="{{ ldap_pam_param_config[item[0]][item[1]] }}"
+    value="{{ ldap_lookups[item[0]][item[1]] }}"
   with_nested:
     - ['admin', 'user', 'host', 'membership']
     - ['base', 'scope', 'filter']
