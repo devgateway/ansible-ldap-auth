@@ -1,4 +1,7 @@
 ---
+- name: Load defaults for {{ ansible_os_family }}
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - name: Install LDAP client packages
   yum: name={{ item }} state=latest
   with_items: 
@@ -9,11 +12,6 @@
     - getauthorizedkeys
   tags:
     - package
-
-- name: Install LDAP server TLS certificate
-  copy: src=certs/{{ ldap_tls_cert }} dest={{ ldap_tls_cacertdir }}/ mode=644
-  tags:
-    - config
 
 - name: Configure pam-param LDAP connection
   ini_file: >
@@ -65,6 +63,18 @@
     line="{{ item.directive }} {{ item.value }}"
   with_items: "{{ ldap_sshd_config }}"
   notify: Validate SSH config
+  tags:
+    - config
+
+- name: Configure libldap
+  lineinfile: >
+    dest={{ ldap_conf }}
+    regexp="(?i)^\\s*{{ item.0 }}\\b"
+    line="{{ item.0 }} {{ item.1 }}"
+  with_together:
+    - ['BASE', 'SASL_NOCANON', 'URI']
+    - ['{{ ldap_base }}', 'on', '{{ ldap_uri }}']
+  notify: Restart NSLCD
   tags:
     - config
 

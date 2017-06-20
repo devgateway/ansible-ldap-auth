@@ -1,4 +1,4 @@
 ssl on
-tls_cacertfile {{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }}
+tls_cacertfile {{ ldap_tls_cacert }}
 uri {{ ldap_uri }}
 sudoers_base {{ ldap_base_sudoers }}

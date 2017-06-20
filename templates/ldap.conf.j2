@@ -1,6 +1,0 @@
-{% if ldap_base is defined %}
-BASE {{ ldap_base }}
-{% endif %}
-SASL_NOCANON on
-TLS_CACERT {{ ldap_tls_cacertdir }}/{{ ldap_tls_cert }}
-URI {{ ldap_uri }}

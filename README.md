@@ -17,8 +17,6 @@ Role Variables
 
 * `ldap_dn`, `ldap_pw` *(optional)* - credentials to connect to your LDAP server with.
 
-* `ldap_tls_cert` - TLS/SSL certificate for your LDAP server.
-
 ### LDAP lookup configuration for NSS and pam-param
 
 * `ldap_base_sudoers` - base for sudoers records lookups.
@@ -49,15 +47,15 @@ Role Variables
 
 * `ldap_sudoers` - whether to try looking up sudoers records in LDAP. If false, NSS will only consider local files. This would be useful to override generic LDAP sudoers with local settings (e.g. to disallow sudoers).
 
-* `ldap_tls_cacertdir` - where to install LDAP certificate.
-
 * `ldap_uid_min` - minimum numeric ID for non-system users, on most modern systems equals 1000.
 
 
 Dependencies
 ------------
 
-* `local-repo` - the role adding a local repository with pam-param and getauthorizedkeys RPMs.
+* `local-repo` - add a local repository with pam-param and getauthorizedkeys RPMs.
+
+* `ca-client` - install trusted CA.
 
 Example Playbook
 ----------------
@@ -66,7 +64,6 @@ Example Playbook
       roles:
         - ldap-auth
       vars:
-        ldap_tls_cert: production.crt
         ldap_uri: ldaps://ldap.example.org
         ldap_sudoers: false
         ldap_base: dc=example,dc=org
