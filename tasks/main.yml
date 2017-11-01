@@ -3,8 +3,10 @@
   include_vars: "{{ ansible_os_family }}.yml"
 
 - name: Install LDAP client packages
-  yum: name={{ item }} state=latest
-  with_items: 
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
     - nss-pam-ldapd
     - openldap
     - openldap-clients
@@ -14,11 +16,11 @@
     - package
 
 - name: Configure pam-param LDAP connection
-  ini_file: >
-    dest={{ ldap_pam_param_config_file }}
-    section=ldap
-    option="{{ item.0 }}"
-    value="{{ item.1 }}"
+  ini_file:
+    dest: "{{ ldap_pam_param_config_file }}"
+    section: ldap
+    option: "{{ item.0 }}"
+    value: "{{ item.1 }}"
   with_together:
     - ['uri', 'binddn', 'bindpw']
     - ["{{ ldap_uri }}", "{{ ldap_dn | default('') }}", "{{ ldap_pw | default('') }}"]
@@ -26,11 +28,11 @@
     - config
 
 - name: Configure pam-param lookups
-  ini_file: >
-    dest={{ ldap_pam_param_config_file }}
-    section="{{ item[0] }}"
-    option="{{ item[1] }}"
-    value="{{ ldap_lookups[item[0]][item[1]] }}"
+  ini_file:
+    dest: "{{ ldap_pam_param_config_file }}"
+    section: "{{ item[0] }}"
+    option: "{{ item[1] }}"
+    value: "{{ ldap_lookups[item[0]][item[1]] }}"
   with_nested:
     - ['admin', 'user', 'host', 'membership']
     - ['base', 'scope', 'filter']
@@ -38,39 +40,39 @@
     - config
 
 - name: Configure pam-param host name shortening
-  ini_file: >
-    dest={{ ldap_pam_param_config_file }}
-    section=""
-    option=short_name
-    value={{ 1 if ldap_pam_param_short_name else 0 }}
+  ini_file:
+    dest: "{{ ldap_pam_param_config_file }}"
+    section: ""
+    option: short_name
+    value: "{{ 1 if ldap_pam_param_short_name else 0 }}"
   tags:
     - config
 
 - name: Configure getauthorizedkeys
-  template: >
-    src=getauthorizedkeys.ini.j2
-    dest=/etc/getauthorizedkeys.ini
-    mode=0600
-    owner={{ ldap_authorized_keys_command_user }}
+  template:
+    src: getauthorizedkeys.ini.j2
+    dest: /etc/getauthorizedkeys.ini
+    mode: 0600
+    owner: "{{ ldap_authorized_keys_command_user }}"
   tags:
     - config
 
 - name: Configure SSH with LDAP public keys support
-  lineinfile: >
-    dest=/etc/ssh/sshd_config
-    regexp="(?i)^\\s*{{ item.directive }}\\b"
-    insertafter="(?i)^#\\s*{{ item.directive }}\\b"
-    line="{{ item.directive }} {{ item.value }}"
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "(?i)^\\s*{{ item.directive }}\\b"
+    insertafter: "(?i)^#\\s*{{ item.directive }}\\b"
+    line: "{{ item.directive }} {{ item.value }}"
   with_items: "{{ ldap_sshd_config }}"
   notify: Validate SSH config
   tags:
     - config
 
 - name: Configure libldap
-  lineinfile: >
-    dest={{ ldap_conf }}
-    regexp="(?i)^\\s*{{ item.0 }}\\b"
-    line="{{ item.0 }} {{ item.1 }}"
+  lineinfile:
+    dest: "{{ ldap_conf }}"
+    regexp: "(?i)^\\s*{{ item.0 }}\\b"
+    line: "{{ item.0 }} {{ item.1 }}"
   with_together:
     - ['BASE', 'SASL_NOCANON', 'URI']
     - ['{{ ldap_base }}', 'on', '{{ ldap_uri }}']
@@ -79,22 +81,33 @@
     - config
 
 - name: Install LDAP client config files
-  template: src={{ item.key }}.j2 dest={{ item.value.dest }} mode={{ item.value.mode }}
+  template:
+    src: "{{ item.key }}.j2"
+    dest: "{{ item.value.dest }}"
+    mode: "{{ item.value.mode }}"
   with_dict: "{{ ldap_client_files }}"
   notify: Restart NSLCD
   tags:
     - config
 
 - name: Configure NSS to use LDAP services
-  template: src=nsswitch.conf.j2 dest=/etc/nsswitch.conf mode=644
+  template:
+    src: nsswitch.conf.j2
+    dest: /etc/nsswitch.conf
+    mode: 0644
   tags:
     - config
 
 - name: Enable NSLCD service
-  service: name=nslcd enabled=yes
+  service:
+    name: nslcd
+    enabled: True
 
 - name: Install LDAP auth and secure TTY PAM stacks
-  template: src=pam.d/{{ item }}.j2 dest=/etc/pam.d/{{ item }} mode=644
+  template:
+    src: "pam.d/{{ item }}.j2"
+    dest: "/etc/pam.d/{{ item }}"
+    mode: 0644
   with_items:
     - login
     - ldap-auth
@@ -102,10 +115,13 @@
     - config
 
 - name: Configure PAM system and password auth to use LDAP
-  file: src=ldap-auth dest=/etc/pam.d/{{ item }} state=link force=yes
+  file:
+    src: ldap-auth
+    dest: "/etc/pam.d/{{ item }}"
+    state: link
+    force: True
   with_items:
     - system-auth
     - password-auth
   tags:
     - config
-
