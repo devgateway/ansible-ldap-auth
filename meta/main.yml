@@ -8,5 +8,5 @@ galaxy_info:
   min_ansible_version: 1.2
 
 dependencies:
-  - local-repo
-  - ca-client
+  - role: devgateway.local-repo
+  - role: devgateway.ca-client
