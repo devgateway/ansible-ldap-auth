@@ -15,6 +15,14 @@
   tags:
     - package
 
+- name: Enable dynamic CA in ldap.conf
+  lineinfile: >
+    dest={{ ldap_conf_path }}
+    regexp="(?i)^\\s*TLS_CACERT\\b"
+    line="TLS_CACERT {{ ldap_ca_path }}"
+  tags:
+    - config
+
 - name: Configure pam-param LDAP connection
   ini_file:
     dest: "{{ ldap_pam_param_config_file }}"

@@ -13,3 +13,5 @@ ldap_sshd_config:
 ldap_pam_param_short_name: true
 ldap_pam_param_config_file: /etc/security/pam_param.ini
 ldap_sudoers: true
+ldap_ca_path: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ldap_conf_path: /etc/openldap/ldap.conf
