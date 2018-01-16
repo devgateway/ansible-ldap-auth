@@ -1,7 +1,4 @@
 ---
-- name: Load defaults for {{ ansible_os_family }}
-  include_vars: "{{ ansible_os_family }}.yml"
-
 - name: Install LDAP client packages
   yum:
     name: "{{ item }}"
@@ -17,7 +14,7 @@
 
 - name: Enable dynamic CA in ldap.conf
   lineinfile: >
-    dest={{ ldap_conf_path }}
+    dest={{ ldap_conf[ansible_os_family] }}
     regexp="(?i)^\\s*TLS_CACERT\\b"
     line="TLS_CACERT {{ ldap_ca_path }}"
   tags:
@@ -78,7 +75,7 @@
 
 - name: Configure libldap
   lineinfile:
-    dest: "{{ ldap_conf }}"
+    dest: "{{ ldap_conf[ansible_os_family] }}"
     regexp: "(?i)^\\s*{{ item.0 }}\\b"
     line: "{{ item.0 }} {{ item.1 }}"
   with_together:
@@ -93,7 +90,7 @@
     src: "{{ item.key }}.j2"
     dest: "{{ item.value.dest }}"
     mode: "{{ item.value.mode }}"
-  with_dict: "{{ ldap_client_files }}"
+  with_dict: "{{ ldap_client_files[ansible_os_family] }}"
   notify: Restart NSLCD
   tags:
     - config

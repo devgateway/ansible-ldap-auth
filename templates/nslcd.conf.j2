@@ -20,6 +20,6 @@ filter netgroup {{ ldap_netgroup_filter }}
 {% if ansible_distribution_major_version >= 7 %}
 nss_min_uid {{ ldap_uid_min }}
 {% endif %}
-tls_cacertfile {{ ldap_tls_cacert }}
+tls_cacertfile {{ ldap_tls_cacert[ansible_os_family] }}
 tls_ciphers TLSv1
 ssl on

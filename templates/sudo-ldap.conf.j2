@@ -1,4 +1,4 @@
 ssl on
-tls_cacertfile {{ ldap_tls_cacert }}
+tls_cacertfile {{ ldap_tls_cacert[ansible_os_family] }}
 uri {{ ldap_uri }}
 sudoers_base {{ ldap_base_sudoers }}
