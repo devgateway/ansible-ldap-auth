@@ -49,14 +49,6 @@ Role Variables
 
 * `ldap_uid_min` - minimum numeric ID for non-system users, on most modern systems equals 1000.
 
-
-Dependencies
-------------
-
-* `local-repo` - add a local repository with pam-param and getauthorizedkeys RPMs.
-
-* `ca-client` - install trusted CA.
-
 Example Playbook
 ----------------
 
