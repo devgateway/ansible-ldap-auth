@@ -90,7 +90,7 @@
     src: "{{ item.key }}.j2"
     dest: "{{ item.value.dest }}"
     mode: "{{ item.value.mode }}"
-  with_dict: "{{ ldap_client_files[ansible_os_family] }}"
+  with_dict: "{{ ldap_client_files[ansible_distribution] }}"
   notify: Restart NSLCD
   tags:
     - config

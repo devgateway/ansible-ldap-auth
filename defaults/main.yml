@@ -2,9 +2,16 @@
 ldap_authorized_keys_command_user: nobody
 ldap_ca_path: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 ldap_client_files:
-  RedHat:
+  Scientific:
     sudo-ldap.conf:
       dest: /etc/sudo-ldap.conf
+      mode: 640
+    nslcd.conf:
+      dest: /etc/nslcd.conf
+      mode: 600
+  Fedora:
+    sudo-ldap.conf:
+      dest: /etc/ldap.conf
       mode: 640
     nslcd.conf:
       dest: /etc/nslcd.conf
