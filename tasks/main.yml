@@ -1,14 +1,12 @@
 ---
 - name: Install LDAP client packages
-  yum:
-    name: "{{ item }}"
-    state: latest
-  with_items:
-    - nss-pam-ldapd
-    - openldap
-    - openldap-clients
-    - pam-param
-    - getauthorizedkeys
+  package:
+    name:
+      - nss-pam-ldapd
+      - openldap
+      - openldap-clients
+      - pam-param
+      - getauthorizedkeys
   tags:
     - package
 
