@@ -12,6 +12,14 @@ ldap_conf:
   Fedora: &rhldapconf /etc/openldap/ldap.conf
   Scientific: *rhldapconf
   Debian: /etc/ldap/ldap.conf
+ldap_nslcd_user:
+  Fedora: &nslcdusr
+    uid: nslcd
+    gid: ldap
+  Scientific: *nslcdusr
+  Debian:
+    uid: nslcd
+    gid: nslcd
 ldap_pam_param_short_name: true
 ldap_pam_param_config_file: /etc/security/pam_param.ini
 ldap_pubkey_filter: (&(objectClass=ldapPublicKey)(uid=%s))

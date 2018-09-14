@@ -1,5 +1,5 @@
-uid nslcd
-gid ldap
+uid {{ ldap_nslcd_user[ansible_distribution].uid }}
+gid {{ ldap_nslcd_user[ansible_distribution].gid }}
 
 uri {{ ldap_uri }}
 
