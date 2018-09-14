@@ -6,17 +6,15 @@ ldap_ca_path:
   Debian: /etc/ssl/certs/ca-certificates.crt
 ldap_client_files:
   Scientific:
-    sudo-ldap.conf:
-      dest: /etc/sudo-ldap.conf
-      mode: 640
     nslcd.conf: &rhnslcdconf
       dest: /etc/nslcd.conf
       mode: 600
   Fedora:
-    sudo-ldap.conf:
-      dest: /etc/ldap.conf
-      mode: 640
     nslcd.conf: *rhnslcdconf
+ldap_sudo_ldap_conf:
+  Scientific: /etc/sudo-ldap.conf
+  Fedora: /etc/ldap.conf
+  Debian: /etc/sudo-ldap.conf
 ldap_conf:
   Fedora: &rhldapconf /etc/openldap/ldap.conf
   Scientific: *rhldapconf
