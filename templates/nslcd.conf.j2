@@ -21,5 +21,8 @@ filter netgroup {{ ldap_netgroup_filter }}
 nss_min_uid {{ ldap_uid_min }}
 {% endif %}
 tls_cacertfile {{ ldap_ca_path[ansible_distribution] }}
+{# seems to be a bug in libldap #}
+{% if ansible_os_family != 'Debian' %}
 tls_ciphers HIGH:TLSv1:!NULL
+{% endif %}
 ssl on
