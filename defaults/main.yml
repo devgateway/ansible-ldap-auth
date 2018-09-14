@@ -9,16 +9,14 @@ ldap_client_files:
     sudo-ldap.conf:
       dest: /etc/sudo-ldap.conf
       mode: 640
-    nslcd.conf:
+    nslcd.conf: &rhnslcdconf
       dest: /etc/nslcd.conf
       mode: 600
   Fedora:
     sudo-ldap.conf:
       dest: /etc/ldap.conf
       mode: 640
-    nslcd.conf:
-      dest: /etc/nslcd.conf
-      mode: 600
+    nslcd.conf: *rhnslcdconf
 ldap_conf:
   Fedora: &rhldapconf /etc/openldap/ldap.conf
   Scientific: *rhldapconf
@@ -43,15 +41,13 @@ ldap_pam_templates:
   Scientific: *rhtemplates
   Debian: Debian
 ldap_packages:
-  Fedora:
-    &rhpackages
+  Fedora: &rhpackages
     - nss-pam-ldapd
     - openldap
     - openldap-clients
     - pam-param
     - getauthorizedkeys
-  Scientific:
-    *rhpackages
+  Scientific: *rhpackages
   Debian:
     - nslcd
     - libnss-ldap
