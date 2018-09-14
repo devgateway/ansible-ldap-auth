@@ -24,8 +24,6 @@ ldap_sshd_config:
   - directive: UsePAM
     value: "yes"
 ldap_sudoers: true
-ldap_tls_cacert:
-  RedHat: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 ldap_uid_min: 1000
 ldap_pam_templates:
   Fedora: &rhtemplates RedHat

@@ -20,6 +20,6 @@ filter netgroup {{ ldap_netgroup_filter }}
 {% if not (ansible_os_family == 'RedHat' and ansible_distribution_major_version < 7) %}
 nss_min_uid {{ ldap_uid_min }}
 {% endif %}
-tls_cacertfile {{ ldap_tls_cacert[ansible_os_family] }}
+tls_cacertfile {{ ldap_ca_path[ansible_distribution] }}
 tls_ciphers HIGH:TLSv1:!NULL
 ssl on

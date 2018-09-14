@@ -95,7 +95,7 @@
     line: "{{ item.key }} {{ item.value }}"
   with_dict:
     SSL: "on"
-    TLS_CACERTFILE: "{{ ldap_tls_cacert[ansible_os_family] }}"
+    TLS_CACERTFILE: "{{ ldap_ca_path[ansible_distribution] }}"
     URI: "{{ ldap_uri }}"
     SUDOERS_BASE: "{{ ldap_base_sudoers }}"
   tags:
