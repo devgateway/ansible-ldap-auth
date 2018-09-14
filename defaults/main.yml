@@ -1,6 +1,9 @@
 ---
 ldap_authorized_keys_command_user: nobody
-ldap_ca_path: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+ldap_ca_path:
+  Fedora: &rhcapath /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
+  Scientific: *rhcapath
+  Debian: /etc/ssl/certs/ca-certificates.crt
 ldap_client_files:
   Scientific:
     sudo-ldap.conf:
@@ -17,7 +20,9 @@ ldap_client_files:
       dest: /etc/nslcd.conf
       mode: 600
 ldap_conf:
-  RedHat: /etc/openldap/ldap.conf
+  Fedora: &rhldapconf /etc/openldap/ldap.conf
+  Scientific: *rhldapconf
+  Debian: /etc/ldap/ldap.conf
 ldap_pam_param_short_name: true
 ldap_pam_param_config_file: /etc/security/pam_param.ini
 ldap_pubkey_filter: (&(objectClass=ldapPublicKey)(uid=%s))
@@ -33,3 +38,19 @@ ldap_sudoers: true
 ldap_tls_cacert:
   RedHat: /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
 ldap_uid_min: 1000
+ldap_packages:
+  Fedora:
+    &rhpackages
+    - nss-pam-ldapd
+    - openldap
+    - openldap-clients
+    - pam-param
+    - getauthorizedkeys
+  Scientific:
+    *rhpackages
+  Debian:
+    - nslcd
+    - libnss-ldap
+    - ldap-utils
+    - libpam-param
+    - getauthorizedkeys

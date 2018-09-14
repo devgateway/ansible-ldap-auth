@@ -1,20 +1,15 @@
 ---
 - name: Install LDAP client packages
   package:
-    name:
-      - nss-pam-ldapd
-      - openldap
-      - openldap-clients
-      - pam-param
-      - getauthorizedkeys
+    name: "{{ ldap_packages[ansible_distribution] }}"
   tags:
     - package
 
 - name: Enable dynamic CA in ldap.conf
-  lineinfile: >
-    dest={{ ldap_conf[ansible_os_family] }}
-    regexp="(?i)^\\s*TLS_CACERT\\b"
-    line="TLS_CACERT {{ ldap_ca_path }}"
+  lineinfile:
+    dest: "{{ ldap_conf[ansible_distribution] }}"
+    regexp: (?i)^\s*TLS_CACERT\b
+    line: TLS_CACERT {{ ldap_ca_path[ansible_distribution] }}
   tags:
     - config
 
@@ -73,7 +68,7 @@
 
 - name: Configure libldap
   lineinfile:
-    dest: "{{ ldap_conf[ansible_os_family] }}"
+    dest: "{{ ldap_conf[ansible_distribution] }}"
     regexp: "(?i)^\\s*{{ item.0 }}\\b"
     line: "{{ item.0 }} {{ item.1 }}"
   with_together:
