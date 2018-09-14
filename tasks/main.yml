@@ -102,10 +102,27 @@
     - config
 
 - name: Configure NSS to use LDAP services
-  template:
-    src: nsswitch.conf.j2
+  lineinfile:
     dest: /etc/nsswitch.conf
-    mode: 0644
+    regexp: "^{{ item.key }}:"
+    line: "{{ item.key }}: {{ item.value | join(' ') }}"
+  with_dict:
+    passwd: &passwd
+      - ldap
+      - files
+    shadow: *passwd
+    netgroup: [ ldap ]
+  loop_control:
+    label: "{{ item.key }}: {{ item.value | join(' ') }}"
+  tags:
+    - config
+
+- name: Configure NSS to use LDAP for sudoers
+  lineinfile:
+    dest: /etc/nsswitch.conf
+    regexp: "^sudoers:"
+    line: "sudoers: ldap files"
+  when: ldap_sudoers
   tags:
     - config
 
