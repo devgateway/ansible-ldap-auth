@@ -4,13 +4,6 @@ ldap_ca_path:
   Fedora: &rhcapath /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem
   Scientific: *rhcapath
   Debian: /etc/ssl/certs/ca-certificates.crt
-ldap_client_files:
-  Scientific:
-    nslcd.conf: &rhnslcdconf
-      dest: /etc/nslcd.conf
-      mode: 600
-  Fedora:
-    nslcd.conf: *rhnslcdconf
 ldap_sudo_ldap_conf:
   Scientific: /etc/sudo-ldap.conf
   Fedora: /etc/ldap.conf

@@ -78,12 +78,11 @@
   tags:
     - config
 
-- name: Install LDAP client config files
+- name: Configure NSLCD
   template:
-    src: "{{ item.key }}.j2"
-    dest: "{{ item.value.dest }}"
-    mode: "{{ item.value.mode }}"
-  with_dict: "{{ ldap_client_files[ansible_distribution] }}"
+    src: nslcd.conf.j2
+    dest: /etc/nslcd.conf
+    mode: 0600
   notify: Restart NSLCD
   tags:
     - config
@@ -93,7 +92,7 @@
     create: true
     mode: 0640
     dest: "{{ ldap_sudo_ldap_conf[ansible_distribution] }}"
-    regexp: (?i)^\s*{{ item.0 }}\b
+    regexp: (?i)^\s*{{ item.key }}\b
     line: "{{ item.key }} {{ item.value }}"
   with_dict:
     SSL: on
