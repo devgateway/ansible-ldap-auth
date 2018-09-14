@@ -1,0 +1,13 @@
+Name: DG LDAP Authentication
+Default: yes
+Priority: 512
+Auth-Type: Primary
+Auth-Initial:
+	[success=end default=ignore]	pam_ldap.so minimum_uid={{ ldap_uid_min }} ignore_authinfo_unavail
+Auth:
+	[success=end default=ignore]	pam_ldap.so minimum_uid={{ ldap_uid_min }} ignore_authinfo_unavail use_first_pass
+Password-Type: Primary
+Password-Initial:
+	[success=end default=ignore]	pam_ldap.so minimum_uid={{ ldap_uid_min }}
+Password:
+	[success=end default=ignore]	pam_ldap.so minimum_uid={{ ldap_uid_min }} use_authtok

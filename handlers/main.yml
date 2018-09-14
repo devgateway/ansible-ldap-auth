@@ -12,3 +12,6 @@
   service:
     name: sshd
     state: reloaded
+
+- name: Update PAM configuration
+  command: pam-auth-update --enable dg-ldap --force
