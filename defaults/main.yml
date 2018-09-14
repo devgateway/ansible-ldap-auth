@@ -51,6 +51,7 @@ ldap_packages:
   Debian:
     - nslcd
     - libnss-ldap
+    - sudo-ldap
     - ldap-utils
     - libpam-param
     - getauthorizedkeys
