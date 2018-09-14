@@ -73,7 +73,7 @@
     line: "{{ item.key }} {{ item.value }}"
   with_dict:
     BASE: "{{ ldap_base }}"
-    SASL_NOCANON: on
+    SASL_NOCANON: "on"
     URI: "{{ ldap_uri }}"
   notify: Restart NSLCD
   tags:
@@ -90,13 +90,11 @@
 
 - name: Configure sudo LDAP backend
   lineinfile:
-    create: true
-    mode: 0640
     dest: "{{ ldap_sudo_ldap_conf[ansible_distribution] }}"
     regexp: (?i)^\s*{{ item.key }}\b
     line: "{{ item.key }} {{ item.value }}"
   with_dict:
-    SSL: on
+    SSL: "on"
     TLS_CACERTFILE: "{{ ldap_tls_cacert[ansible_os_family] }}"
     URI: "{{ ldap_uri }}"
     SUDOERS_BASE: "{{ ldap_base_sudoers }}"
