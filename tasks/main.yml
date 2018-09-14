@@ -58,8 +58,8 @@
 - name: Configure SSH with LDAP public keys support
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: "(?i)^\\s*{{ item.directive }}\\b"
-    insertafter: "(?i)^#\\s*{{ item.directive }}\\b"
+    regexp: (?i)^\s*{{ item.directive }}\b
+    insertafter: (?i)^#\s*{{ item.directive }}\b
     line: "{{ item.directive }} {{ item.value }}"
   with_items: "{{ ldap_sshd_config }}"
   notify: Validate SSH config
@@ -69,7 +69,7 @@
 - name: Configure libldap
   lineinfile:
     dest: "{{ ldap_conf[ansible_distribution] }}"
-    regexp: "(?i)^\\s*{{ item.0 }}\\b"
+    regexp: (?i)^\s*{{ item.0 }}\b
     line: "{{ item.0 }} {{ item.1 }}"
   with_together:
     - ['BASE', 'SASL_NOCANON', 'URI']
