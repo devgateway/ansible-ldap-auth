@@ -51,17 +51,27 @@
     src: getauthorizedkeys.ini.j2
     dest: /etc/getauthorizedkeys.ini
     mode: 0600
-    owner: "{{ ldap_authorized_keys_command_user }}"
+    owner: "{{ ldap_sshd_config.AuthorizedKeysCommandUser[ansible_os_family] }}"
+  tags:
+    - config
+
+- name: Configure SSH to use PAM
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: (?i)^\s*UsePAM\b
+    insertafter: (?i)^#\s*UsePAM\b
+    line: "UsePAM yes"
+  notify: Validate SSH config
   tags:
     - config
 
 - name: Configure SSH with LDAP public keys support
   lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: (?i)^\s*{{ item.directive }}\b
-    insertafter: (?i)^#\s*{{ item.directive }}\b
-    line: "{{ item.directive }} {{ item.value }}"
-  with_items: "{{ ldap_sshd_config }}"
+    regexp: (?i)^\s*{{ item.key }}\b
+    insertafter: (?i)^#\s*{{ item.key }}\b
+    line: "{{ item.key }} {{ item.value[ansible_os_family] }}"
+  with_dict: "{{ ldap_sshd_config }}"
   notify: Validate SSH config
   tags:
     - config
