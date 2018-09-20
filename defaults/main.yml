@@ -47,7 +47,8 @@ ldap_packages:
   Scientific: *rhpackages
   Debian:
     - nslcd
-    - libnss-ldap
+    - libnss-ldapd
+    - libpam-ldapd
     - sudo-ldap
     - ldap-utils
     - libpam-param
