@@ -14,4 +14,8 @@
     state: reloaded
 
 - name: Update PAM configuration
-  command: pam-auth-update --enable dg-ldap mkhomedir --force
+  command: >
+    pam-auth-update
+    --enable dg-ldap mkhomedir
+    --remove ldap
+    --force

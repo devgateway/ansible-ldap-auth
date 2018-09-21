@@ -6,6 +6,3 @@
   notify: Update PAM configuration
   tags:
     - config
-
-- name: Remove stock LDAP PAM config
-  command: pam-auth-update --remove ldap --force
