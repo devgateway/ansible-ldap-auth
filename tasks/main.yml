@@ -101,6 +101,7 @@
 - name: Configure sudo LDAP backend
   lineinfile:
     dest: "{{ ldap_sudo_ldap_conf[ansible_distribution] }}"
+    create: true
     regexp: (?i)^\s*{{ item.key }}\b
     line: "{{ item.key }} {{ item.value }}"
   with_dict:
