@@ -147,3 +147,7 @@
 - include_tasks: pam.{{ ansible_os_family }}.yml
   tags:
     - config
+
+- name: Clear NSCD caches
+  command: nscd -i
+  ignore_errors: true
