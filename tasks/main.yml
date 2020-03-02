@@ -2,6 +2,7 @@
 - name: Install LDAP client packages
   package:
     name: "{{ ldap_packages[ansible_distribution] }}"
+  notify: Update PAM configuration
   tags:
     - package
 

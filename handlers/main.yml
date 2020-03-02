@@ -16,6 +16,7 @@
 - name: Update PAM configuration
   command: >
     pam-auth-update
-    --enable dg-ldap mkhomedir
+    --enable pam_param mkhomedir
     --remove ldap
     --force
+  when: ansible_os_family == 'Debian'
